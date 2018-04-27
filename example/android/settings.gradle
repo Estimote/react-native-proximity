@@ -1,0 +1,5 @@
+rootProject.name = 'example'
+include ':react-native-estimote-proximity'
+project(':react-native-estimote-proximity').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-estimote-proximity/android')
+
+include ':app'
