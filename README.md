@@ -1,42 +1,64 @@
 # react-native-estimote-proximity
 
+React Native wrapper for Estimote Proximity SDK.
+
+You can read more about Estimote Proximity on [developer.estimote.com](https://developer.estimote.com).
+
 ## Getting started
 
-`$ npm install react-native-estimote-proximity --save`
+```
+$ npm install react-native-estimote-proximity --save
+$ react-native link react-native-estimote-proximity
+```
 
-### Mostly automatic installation
+On **Android**, that's it. On **iOS**, you also need to add Estimote Proximity SDK to your app's Xcode project. The easiest way to do that is via CocoaPods:
 
-`$ react-native link react-native-estimote-proximity`
+1. Install CocoaPods: https://cocoapods.org
 
-### Manual installation
+2. In the `ios` directory of your app, add a `Podfile` with this content:
 
-#### iOS
+   ```ruby
+   platform :ios, '10.0'
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-estimote-proximity` and add `RNEstimoteProximity.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNEstimoteProximity.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+   target 'NAME_OF_YOUR_APP' do
+     pod 'EstimoteProximitySDK'
+   end
+   ```
 
-#### Android
+   The `NAME_OF_YOUR_APP` is usually the same thing you used with `react-native init`.
 
-1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import com.estimote.react.RNEstimoteProximityPackage;` to the imports at the top of the file
-  - Add `new RNEstimoteProximityPackage()` to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-estimote-proximity'
-  	project(':react-native-estimote-proximity').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-estimote-proximity/android')
-  	```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-    compile project(':react-native-estimote-proximity')
-  	```
+3. Inside the `ios` directory, run:
+
+   ```
+   $ pod --repo-update install
+   ```
+
+If you want to run the bundled `example`, you also need to do steps 1 and 3 inside the `example/ios` directory.
 
 ## Usage
 
 ```javascript
-import RNEstimoteProximity from 'react-native-estimote-proximity';
+import * as RNEP from 'react-native-estimote-proximity'
 
-// TODO: What to do with the module?
-RNEstimoteProximity;
+// generate Estimote Cloud credentials for your app at:
+// https://cloud.estimote.com/#/apps/add/your-own-app
+const credentials = new RNEP.CloudCredentials('APP_ID', 'APP_TOKEN')
+RNEP.proximityObserver.initialize(credentials)
+
+const zone1 = new RNEP.ProximityZone(5, 'type', 'lobby')
+// will trigger when the user is within ~ 5 m of any beacon with attachment "type: lobby"
+// you can add attachments to your beacons on https://cloud.estimote.com, in Beacon Settings
+zone1.onEnterAction = (attachment) => {
+  const venue = attachment.payload.get('venue')
+  notifyFrontDesk(venue)
+  console.log(`Welcome to ${venue}, somebody will be with you shortly.`)
+}
+
+RNEP.proximityObserver.startObservingZones([zone1])
 ```
+
+## Contact & feedback
+
+Let us know your thoughts and feedback on [forums.estimote.com][forums].
+
+[forums]: https://forums.estimote.com
