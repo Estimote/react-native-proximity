@@ -4,15 +4,15 @@
 
 # node.js
 #
-node_modules/
+node_modules
 npm-debug.log
 yarn-error.log
   
 
 # Xcode
 #
-Pods/
-build/
+Pods
+build
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -33,13 +33,13 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
-build/
+build
 .idea
 .gradle
 local.properties
 *.iml
 
 # BUCK
-buck-out/
-\.buckd/
+buck-out
+\.buckd
 *.keystore
