@@ -5,5 +5,8 @@
   "main": "index.js",
   "keywords": ["react-native", "estimote"],
   "author": "Estimote <contact@estimote.com>",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/Estimote/react-native-estimote-proximity",
+  "bugs": {"url": "https://github.com/Estimote/react-native-estimote-proximity/issues"},
+  "repository": {"type": "git", "url": "https://github.com/Estimote/react-native-estimote-proximity.git"}
 }
