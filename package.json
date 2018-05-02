@@ -1,6 +1,6 @@
 {
   "name": "react-native-estimote-proximity",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native wrapper for Estimote Proximity SDK",
   "main": "index.js",
   "keywords": ["react-native", "estimote"],
