@@ -118,11 +118,23 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
       observer.addProximityZone(zone);
     }
 
+    // clean up after the previous observer, if any
+    if (observationHandler != null) {
+      observationHandler.stop();
+    }
+
     observationHandler = observer.start();
   }
 
   @ReactMethod
   public void stopObservingZones() {
+    if (observationHandler != null) {
+      observationHandler.stop();
+    }
+  }
+
+  @Override
+  public void onCatalystInstanceDestroy() {
     if (observationHandler != null) {
       observationHandler.stop();
     }

@@ -1,7 +1,7 @@
 // @flow
 'use strict'
 
-import { NativeModules, NativeEventEmitter } from 'react-native'
+import { NativeModules, NativeEventEmitter, Platform, PermissionsAndroid } from 'react-native'
 
 const { RNEstimoteProximity } = NativeModules
 const RNEstimoteProximityEmitter = new NativeEventEmitter(RNEstimoteProximity);
@@ -117,5 +117,24 @@ export const proximityObserver = { // singleton object
     this.onEnterSubscription.remove()
     this.onExitSubscription.remove()
     this.onChangeSubscription.remove()
+  }
+}
+
+type PermissionStatus = 'always' | 'when_in_use' | 'denied'
+
+export const locationPermission = {
+  ALWAYS: 'always',
+  WHEN_IN_USE: 'when_in_use',
+  DENIED: 'denied',
+
+  request: async (): Promise<PermissionStatus> => {
+    if (Platform.OS === 'ios') {
+      const result = await RNEstimoteProximity.requestLocationPermission()
+      return result
+    } else if (Platform.OS === 'android') {
+      const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION)
+      return result === 'granted' ? 'always' : 'denied'
+    }
+    throw 'Unsupported platform'
   }
 }

@@ -36,9 +36,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Change me.</string>
+	<string>Change me in the Info.plist file</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Change me.</string>
+	<string>Change me in the Info.plist file</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
