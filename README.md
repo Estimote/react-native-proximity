@@ -46,7 +46,7 @@ On **Android**, you need to bump the `minSdkVersion` of your app to 18, since th
 Since detecting proximity to Bluetooth beacons gives you some idea of the user's location, both iOS and Android require that the user agrees to that, even though we're not actually using GPS or the likes. Location services must also be globally enabled in the system.
 
 ```javascript
-import * as RNEP from 'react-native-estimote-proximity'
+import * as RNEP from '@estimote/react-native-proximity'
 
 // this will trigger a popup with "allow this app to access your location?"
 RNEP.locationPermission.request()
