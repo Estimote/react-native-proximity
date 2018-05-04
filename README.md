@@ -13,8 +13,8 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 ## Installation
 
 ```
-$ npm install react-native-estimote-proximity --save
-$ react-native link react-native-estimote-proximity
+$ npm install @estimote/react-native-proximity --save
+$ react-native link @estimote/react-native-proximity
 ```
 
 On **iOS**, you also need to add Estimote Proximity SDK and its dependencies to your app's Xcode project. The easiest way to do that is via CocoaPods:
