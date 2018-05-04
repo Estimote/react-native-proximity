@@ -4,7 +4,7 @@
 import { AppRegistry } from 'react-native'
 import App from './App'
 
-import * as RNEP from 'react-native-estimote-proximity'
+import * as RNEP from '@estimote/react-native-proximity'
 
 AppRegistry.registerComponent('example', () => App)
 
