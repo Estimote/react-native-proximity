@@ -1,4 +1,4 @@
-# react-native-estimote-proximity
+# react-native-proximity
 
 React Native wrapper for Estimote Proximity SDK.
 
