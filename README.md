@@ -39,7 +39,19 @@ On **iOS**, you also need to add Estimote Proximity SDK and its dependencies to 
    $ pod --repo-update install
    ```
 
-On **Android**, you need to bump the `minSdkVersion` of your app to 18, since that's the lowest Estimote Proximity SDK supports. In the `android/app/build.gradle` file: find `minSdkVersion 16` and change it to `18`.
+On **Android**, you need to:
+
+- Bump the `minSdkVersion` of your app to 18, since that's the lowest Estimote Proximity SDK supports:
+
+  - In the `android/app/build.gradle` file: find `minSdkVersion 16` and change it to `18`.
+
+- Add Google's Maven repo to the project, since Estimote Proximity SDK depends on some libraries from Google:
+
+  - In the `android/build.gradle` file: find `jcenter()` and this line below it:
+
+    ```
+    maven { url 'https://maven.google.com' }`
+    ```
 
 ## Location permission
 
