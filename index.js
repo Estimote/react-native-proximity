@@ -58,11 +58,11 @@ export class CloudCredentials {
 
 export const proximityObserver = { // singleton object
 
-  initialize(credentials: CloudCredentials) {
-    RNEstimoteProximity.initialize({
+  initialize(credentials: CloudCredentials, config: mixed) {
+    RNEstimoteProximity.initialize(Object.assign(config, {
       appId: credentials.appId,
       appToken: credentials.appToken
-    })
+    }))
   },
 
   startObservingZones(zones: Array<ProximityZone>) {

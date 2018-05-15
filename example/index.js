@@ -40,8 +40,19 @@ RNEP.locationPermission.request()
     if (permission !== RNEP.locationPermission.DENIED) {
       // generate Estimote Cloud credentials for your app at:
       // https://cloud.estimote.com/#/apps/add/your-own-app
-      const credentials = new RNEP.CloudCredentials('<#APP_ID#>', '<#APP_TOKEN#>')
-      RNEP.proximityObserver.initialize(credentials)
+      const credentials = new RNEP.CloudCredentials('generic-asq', '8515b509fbac305129e21f8f9fe1d05e')
+
+      const config = {
+        // modern versions of Android require a notification informing the user that the app is active in the background
+        // if you don't need proximity observation to work in the background, you can omit the entire `notification` config
+        notification: {
+          title: 'Exploration mode is on',
+          text: "We'll notify you when you're next to something interesting.",
+          //icon: 'my_drawable' // if omitted, will default to the app icon (i.e., mipmap/ic_launcher)
+        }
+      }
+
+      RNEP.proximityObserver.initialize(credentials, config)
       RNEP.proximityObserver.startObservingZones([zone1, zone2])
     }
   }, error => {

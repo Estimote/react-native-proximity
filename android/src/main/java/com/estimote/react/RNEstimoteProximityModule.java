@@ -1,5 +1,7 @@
 package com.estimote.react;
 
+import android.app.Notification;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.estimote.proximity_sdk.proximity.EstimoteCloudCredentials;
@@ -50,7 +52,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
         EstimoteCloudCredentials credentials = new EstimoteCloudCredentials(
                 config.getString("appId"), config.getString("appToken"));
 
-        observer = new ProximityObserverBuilder(reactContext, credentials)
+        ProximityObserverBuilder builder = new ProximityObserverBuilder(reactContext, credentials)
                 .withBalancedPowerMode()
                 .withOnErrorAction(new Function1<Throwable, Unit>() {
                     @Override
@@ -58,8 +60,28 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
                         Log.e(TAG, "Proximity Observer error: " + throwable);
                         return null;
                     }
-                })
-                .build();
+                });
+
+
+        if (config.hasKey("notification")) {
+            ReadableMap notificationConfig = config.getMap("notification");
+
+            String icon = notificationConfig.hasKey("icon")
+                    ? notificationConfig.getString("icon")
+                    : null;
+
+            String title = notificationConfig.hasKey("title")
+                    ? notificationConfig.getString("title")
+                    : "Scanning for beacons...";
+
+            String text = notificationConfig.hasKey("text")
+                    ? notificationConfig.getString("text")
+                    : null;
+
+            builder.withScannerInForegroundService(createNotification(icon, title, text));
+        }
+
+        observer = builder.build();
     }
 
     @ReactMethod
@@ -166,5 +188,25 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
+    }
+
+    // notification helper
+
+    private Notification createNotification(String icon, String title, String text) {
+
+        int iconRes = 0;
+        if (icon != null) {
+            iconRes = reactContext.getResources().getIdentifier(icon, "drawable", reactContext.getPackageName());
+        }
+        if (iconRes == 0) {
+            iconRes = reactContext.getResources().getIdentifier("ic_launcher", "mipmap", reactContext.getPackageName());
+        }
+
+        return new NotificationCompat.Builder(reactContext)
+                .setSmallIcon(iconRes)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
     }
 }
