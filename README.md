@@ -12,7 +12,7 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 
 ## Installation
 
-```
+```console
 $ npm install @estimote/react-native-proximity --save
 $ react-native link @estimote/react-native-proximity
 ```
