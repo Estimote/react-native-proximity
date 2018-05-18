@@ -40,7 +40,7 @@ RNEP.locationPermission.request()
     if (permission !== RNEP.locationPermission.DENIED) {
       // generate Estimote Cloud credentials for your app at:
       // https://cloud.estimote.com/#/apps/add/your-own-app
-      const credentials = new RNEP.CloudCredentials('generic-asq', '8515b509fbac305129e21f8f9fe1d05e')
+      const credentials = new RNEP.CloudCredentials('<#APP ID#>', '<#APP TOKEN#>')
 
       const config = {
         // modern versions of Android require a notification informing the user that the app is active in the background
