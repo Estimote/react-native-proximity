@@ -14,13 +14,23 @@ AppRegistry.registerComponent('example', () => App)
 // you can add attachments to your beacons on https://cloud.estimote.com, in Beacon Settings
 const zone1 = new RNEP.ProximityZone(5, 'type', 'lobby')
 zone1.onEnterAction = (attachment) => {
-  console.log('zone1 onEnter', attachment)
+  console.log('zone1 onEnter')
+
+  // each `attachment` has a:
+  // - `deviceIdentifier`
+  console.log('zone1 onEnter deviceIdentifier', attachment.deviceIdentifier)
+
+  // - `payload`, which is a JavaScript [Map][1] of all the key-value pairs
+  //              assigned to the beacon in Estimote Cloud
+  // [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+  console.log('zone1 "beacon" =>', attachment.payload.get('beacon')) // get individual values
+  console.log('zone1 all key-values', Array.from(attachment.payload)) // show all key-value pairs
 }
 zone1.onExitAction = (attachment) => {
-  console.log('zone1 onExit', attachment)
+  console.log('zone1 onExit')
 }
 zone1.onChangeAction = (attachments) => {
-  console.log('zone1 onChange', attachments)
+  console.log('zone1 onChange')
 }
 
 const zone2 = new RNEP.ProximityZone(5, 'type', 'conf_room')
