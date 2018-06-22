@@ -1,6 +1,6 @@
 PODS:
   - EstimoteBluetoothScanning (0.2.0)
-  - EstimoteProximitySDK (0.12.0):
+  - EstimoteProximitySDK (0.14.0):
     - EstimoteBluetoothScanning (~> 0.2.0)
 
 DEPENDENCIES:
@@ -13,7 +13,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   EstimoteBluetoothScanning: d44e46ebebe4e0e2696c4577168cb8660b5d4ee9
-  EstimoteProximitySDK: 279e73acff8ee84dc65e3d42e4dea0905e16bebd
+  EstimoteProximitySDK: 02ddb304db111f50d9005f68268e6cd4e90cc9f4
 
 PODFILE CHECKSUM: f62d8c72393572dd978650878bb2ec07cc0ce8bb
 

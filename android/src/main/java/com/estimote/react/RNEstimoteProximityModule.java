@@ -5,7 +5,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.estimote.proximity_sdk.proximity.EstimoteCloudCredentials;
-import com.estimote.proximity_sdk.proximity.ProximityAttachment;
+import com.estimote.proximity_sdk.proximity.ProximityContext;
 import com.estimote.proximity_sdk.proximity.ProximityObserver;
 import com.estimote.proximity_sdk.proximity.ProximityObserverBuilder;
 import com.estimote.proximity_sdk.proximity.ProximityZone;
@@ -91,41 +91,40 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
             final String _id = zoneJSON.getString("_id");
             double range = zoneJSON.getDouble("range");
-            String attachmentKey = zoneJSON.getString("attachmentKey");
-            String attachmentValue = zoneJSON.getString("attachmentValue");
+            String tag = zoneJSON.getString("tag");
 
             ProximityZone zone = observer.zoneBuilder()
-                    .forAttachmentKeyAndValue(attachmentKey, attachmentValue)
+                    .forTag(tag)
                     .inCustomRange(range)
-                    .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    .withOnEnterAction(new Function1<ProximityContext, Unit>() {
                         @Override
-                        public Unit invoke(ProximityAttachment attachment) {
-                            Log.i(TAG, "onEnterAction, zoneId = " + _id + ", attachment = " + attachment.toString());
+                        public Unit invoke(ProximityContext context) {
+                            Log.i(TAG, "onEnterAction, zoneId = " + _id + ", context = " + context.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
-                            map.putMap("attachment", attachmentToMap(attachment));
+                            map.putMap("context", contextToMap(context));
                             sendEvent("Enter", map);
                             return null;
                         }
                     })
-                    .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    .withOnExitAction(new Function1<ProximityContext, Unit>() {
                         @Override
-                        public Unit invoke(ProximityAttachment attachment) {
-                            Log.i(TAG, "onExitAction, zoneId = " + _id + ", attachment = " + attachment.toString());
+                        public Unit invoke(ProximityContext context) {
+                            Log.i(TAG, "onExitAction, zoneId = " + _id + ", context = " + context.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
-                            map.putMap("attachment", attachmentToMap(attachment));
+                            map.putMap("context", contextToMap(context));
                             sendEvent("Exit", map);
                             return null;
                         }
                     })
-                    .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    .withOnChangeAction(new Function1<List<? extends ProximityContext>, Unit>() {
                         @Override
-                        public Unit invoke(List<? extends ProximityAttachment> attachments) {
-                            Log.i(TAG, "onChangeAction, zoneId = " + _id + ", attachments = " + attachments.toString());
+                        public Unit invoke(List<? extends ProximityContext> contexts) {
+                            Log.i(TAG, "onChangeAction, zoneId = " + _id + ", contexts = " + contexts.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
-                            map.putArray("attachments", attachmentsToArray(attachments));
+                            map.putArray("contexts", contextsToArray(contexts));
                             sendEvent("Change", map);
                             return null;
                         }
@@ -159,25 +158,26 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
     // serialization helpers
 
-    private WritableMap payloadToMap(Map<String, String> payload) {
+    private WritableMap attachmentsToMap(Map<String, String> attachments) {
         WritableMap map = new WritableNativeMap();
-        for (Map.Entry<String, String> entry : payload.entrySet()) {
+        for (Map.Entry<String, String> entry : attachments.entrySet()) {
             map.putString(entry.getKey(), entry.getValue());
         }
         return map;
     }
 
-    private WritableMap attachmentToMap(ProximityAttachment attachment) {
+    private WritableMap contextToMap(ProximityContext context) {
         WritableMap map = new WritableNativeMap();
-        map.putString("deviceIdentifier", attachment.getDeviceId());
-        map.putMap("payload", payloadToMap(attachment.getPayload()));
+        map.putString("tag", context.getTag());
+        map.putMap("attachments", attachmentsToMap(context.getAttachments()));
+        map.putString("deviceIdentifier", context.getInfo().getDeviceId());
         return map;
     }
 
-    private WritableArray attachmentsToArray(List<? extends ProximityAttachment> attachments) {
+    private WritableArray contextsToArray(List<? extends ProximityContext> contexts) {
         WritableArray array = new WritableNativeArray();
-        for (ProximityAttachment attachment : attachments) {
-            array.pushMap(attachmentToMap(attachment));
+        for (ProximityContext context : contexts) {
+            array.pushMap(contextToMap(context));
         }
         return array;
     }

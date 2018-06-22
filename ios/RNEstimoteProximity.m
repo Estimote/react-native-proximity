@@ -8,8 +8,7 @@
 #import "EPXDeviceAttachment.h"
 #import "EPXProximityObserver.h"
 #import "EPXProximityZone.h"
-
-#import "EPXDeviceAttachment+JSON.h"
+#import "EPXProximityZoneContext.h"
 
 NSString * authStringForCurrentAuthStatus() {
     switch ([CLLocationManager authorizationStatus]) {
@@ -24,6 +23,14 @@ NSString * authStringForCurrentAuthStatus() {
             return @"when_in_use";
     }
 }
+
+NSDictionary * contextToJSON(id<EPXProximityZoneContext> context) {
+    NSDictionary *attachments = context.attachments[0].payload;
+    return @{@"tag": context.tag,
+             @"attachments": attachments == nil ? [NSNull null] : attachments,
+             @"deviceIdentifier": context.deviceIdentifier};
+}
+
 
 @interface RNEstimoteProximity () <CLLocationManagerDelegate>
 
@@ -66,41 +73,39 @@ RCT_EXPORT_METHOD(startObservingZones:(NSArray *)zonesJSON) {
     for (NSDictionary *zoneJSON in zonesJSON) {
         NSString *_id = zoneJSON[@"_id"];
         NSNumber *range = zoneJSON[@"range"];
-        NSString *attachmentKey = zoneJSON[@"attachmentKey"];
-        NSString *attachmentValue = zoneJSON[@"attachmentValue"];
+        NSString *tag = zoneJSON[@"tag"];
 
-        RCTLogInfo(@"Creating Proximity Zone _id = %@, range = %@, attachmentKey = %@, attachmentValue = %@", _id, range, attachmentKey, attachmentValue);
+        RCTLogInfo(@"Creating Proximity Zone _id = %@, range = %@, tag = %@", _id, range, tag);
 
         EPXProximityZone *zone = [[EPXProximityZone alloc]
                                   initWithRange:[EPXProximityRange customRangeWithDesiredMeanTriggerDistance:range.doubleValue]
-                                  attachmentKey:attachmentKey
-                                  attachmentValue:attachmentValue];
+                                  tag:tag];
 
         __weak __typeof(self) weakSelf = self;
 
-        zone.onEnterAction = ^(EPXDeviceAttachment *attachment) {
-            RCTLogInfo(@"onEnterAction, zoneId = %@, attachment = %@", _id, attachment);
+        zone.onEnterAction = ^(id<EPXProximityZoneContext> context) {
+            RCTLogInfo(@"onEnterAction, zoneId = %@, context = %@", _id, context);
 
             [weakSelf sendEventWithName:@"Enter" body:@{@"zoneId": _id,
-                                                        @"attachment": [attachment toJSON]}];
+                                                        @"context": contextToJSON(context)}];
         };
 
-        zone.onExitAction = ^(EPXDeviceAttachment *attachment) {
-            RCTLogInfo(@"onExitAction, zoneId = %@, attachment = %@", _id, attachment);
+        zone.onExitAction = ^(id<EPXProximityZoneContext> context) {
+            RCTLogInfo(@"onExitAction, zoneId = %@, context = %@", _id, context);
 
             [weakSelf sendEventWithName:@"Exit" body:@{@"zoneId": _id,
-                                                       @"attachment": [attachment toJSON]}];
+                                                       @"context": contextToJSON(context)}];
         };
 
-        zone.onChangeAction = ^(NSSet<EPXDeviceAttachment *> *attachments) {
-            RCTLogInfo(@"onChangeAction, zoneId = %@, attachments = %@", _id, attachments);
+        zone.onChangeAction = ^(NSSet<id<EPXProximityZoneContext>> *contexts) {
+            RCTLogInfo(@"onChangeAction, zoneId = %@, contexts = %@", _id, contexts);
 
-            NSMutableArray *convertedAttachments = [NSMutableArray arrayWithCapacity:attachments.count];
-            for (EPXDeviceAttachment *attachment in attachments) {
-                [convertedAttachments addObject:[attachment toJSON]];
+            NSMutableArray *convertedContexts = [NSMutableArray arrayWithCapacity:contexts.count];
+            for (id<EPXProximityZoneContext> context in contexts) {
+                [convertedContexts addObject:contextToJSON(context)];
             }
             [weakSelf sendEventWithName:@"Change" body:@{@"zoneId": _id,
-                                                         @"attachments": convertedAttachments}];
+                                                         @"contexts": convertedContexts}];
         };
 
         [zones addObject:zone];
