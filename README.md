@@ -17,27 +17,31 @@ $ npm install @estimote/react-native-proximity --save
 $ react-native link @estimote/react-native-proximity
 ```
 
-On **iOS**, you also need to add Estimote Proximity SDK and its dependencies to your app's Xcode project. The easiest way to do that is via CocoaPods:
+On **iOS**, you also need to:
 
-1. Install CocoaPods: https://cocoapods.org
+1. Add Estimote Proximity SDK and its dependencies to your app's Xcode project. The easiest way to do that is via CocoaPods:
 
-2. In the `ios` directory of your app, add a `Podfile` with this content:
+   `1.1.` Install CocoaPods: https://cocoapods.org
 
-   ```ruby
-   platform :ios, '10.0'
+   `1.2.` In the `ios` directory of your app, add a `Podfile` with this content:
 
-   target 'NAME_OF_YOUR_APP' do
-     pod 'EstimoteProximitySDK'
-   end
-   ```
+      ```ruby
+      platform :ios, '10.0'
 
-   The `NAME_OF_YOUR_APP` is usually the same thing you used with `react-native init`.
+      target 'NAME_OF_YOUR_APP' do
+        pod 'EstimoteProximitySDK'
+      end
+      ```
 
-3. Inside the `ios` directory, run:
+      The `NAME_OF_YOUR_APP` is usually the same thing you used with `react-native init`.
 
-   ```
-   $ pod --repo-update install
-   ```
+   `1.3.` Inside the `ios` directory, run:
+
+      ```
+      $ pod --repo-update install
+      ```
+      
+2. In your Xcode project's Build Settings, find and enable "Always Embed Swift in Standard Libraries".
 
 On **Android**, you need to:
 
