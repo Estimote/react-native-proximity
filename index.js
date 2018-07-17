@@ -12,7 +12,7 @@ const { RNEstimoteProximity } = NativeModules;
 const RNEstimoteProximityEmitter = new NativeEventEmitter(RNEstimoteProximity);
 
 export class ProximityContext {
-  tag: String;
+  tag: string;
   attachments: { [string]: string };
   deviceIdentifier: string;
 

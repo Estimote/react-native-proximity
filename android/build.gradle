@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile('com.estimote:proximity-sdk:0.6.0') {
+    compile('com.estimote:proximity-sdk:0.6.2') {
        exclude module: 'support-core-utils'
     }
 }
