@@ -10,11 +10,11 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -30,7 +30,5 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile('com.estimote:proximity-sdk:0.6.2') {
-       exclude module: 'support-core-utils'
-    }
+    compile('com.estimote:proximity-sdk:0.6.2')
 }

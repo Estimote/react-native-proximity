@@ -54,7 +54,7 @@ zone2.onChangeAction = contexts => {
   console.log("zone2 onChange", contexts);
 };
 
-// detecting Bluetooth beacons is considered as knowing the user's location (because you know when the user is in the lobby 
+// detecting Bluetooth beacons is considered as knowing the user's location (because you know when the user is in the lobby
 // or in the conference room), and so on both iOS and Android it requires asking the user for permission to use their location
 //
 // on Android, it'll be a simple "yes/no" popup
@@ -65,7 +65,7 @@ RNEP.locationPermission.request().then(
   permission => {
     // `permission` will be one of RNEP.locationPermission.DENIED, .ALWAYS, or .WHEN_IN_USE
     console.log(`location permission: ${permission}`);
-    
+
     if (permission !== RNEP.locationPermission.DENIED) {
       // generate Estimote Cloud credentials for your app at:
       // https://cloud.estimote.com/#/apps/add/your-own-app
@@ -81,8 +81,15 @@ RNEP.locationPermission.request().then(
         // see also: "Background support" section in the README
         notification: {
           title: "Exploration mode is on",
-          text: "We'll notify you when you're next to something interesting."
-          //icon: 'my_drawable' // if omitted, will default to the app icon (i.e., mipmap/ic_launcher)
+          text: "We'll notify you when you're next to something interesting.",
+          //icon: 'my_drawable', // if omitted, will default to the app icon (i.e., mipmap/ic_launcher)
+
+          // in apps targeting Android API 26, notifications must specify a channel
+          // https://developer.android.com/guide/topics/ui/notifiers/notifications#ManageChannels
+          channel: {
+            id: "exploration-mode",
+            name: "Exploration Mode"
+          }
         }
       };
 

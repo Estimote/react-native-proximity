@@ -1,6 +1,9 @@
 package com.estimote.react;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -78,7 +81,22 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
                     ? notificationConfig.getString("text")
                     : null;
 
-            builder.withScannerInForegroundService(createNotification(icon, title, text));
+            String channelId = "est-proximity-sdk";
+            String channelName = "Beacon Scanning";
+
+            if (notificationConfig.hasKey("channel")) {
+                ReadableMap channelConfig = notificationConfig.getMap("channel");
+
+                if (channelConfig.hasKey("id")) {
+                    channelId = channelConfig.getString("id");
+                }
+                if (channelConfig.hasKey("name")) {
+                    channelName = channelConfig.getString("name");
+                }
+            }
+
+            createNotificationChannel(channelId, channelName);
+            builder.withScannerInForegroundService(createNotification(icon, title, text, channelId));
         }
 
         observer = builder.build();
@@ -192,7 +210,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
     // notification helper
 
-    private Notification createNotification(String icon, String title, String text) {
+    private Notification createNotification(String icon, String title, String text, String channelId) {
 
         int iconRes = 0;
         if (icon != null) {
@@ -202,11 +220,19 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
             iconRes = reactContext.getResources().getIdentifier("ic_launcher", "mipmap", reactContext.getPackageName());
         }
 
-        return new NotificationCompat.Builder(reactContext)
+        return new NotificationCompat.Builder(reactContext, channelId)
                 .setSmallIcon(iconRes)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
+    }
+
+    private void createNotificationChannel(String id, String name) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
+            NotificationManager notificationManager = reactContext.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

@@ -40,22 +40,15 @@ On **iOS**, you also need to:
       ```
       $ pod --repo-update install
       ```
-      
+
 2. In your Xcode project's Build Settings, find and enable "Always Embed Swift in Standard Libraries".
 
 On **Android**, you need to:
 
 - Bump the `minSdkVersion` of your app to 18, since that's the lowest Estimote Proximity SDK supports:
 
-  - In the `android/app/build.gradle` file: find `minSdkVersion 16` and change it to `18`.
-
-- Add Google's Maven repo to the project, since Estimote Proximity SDK depends on some libraries from Google:
-
-  - In the `android/build.gradle` file: find `jcenter()` and this line below it:
-
-    ```
-    maven { url 'https://maven.google.com' }`
-    ```
+  - In the `android/build.gradle` file: find `minSdkVersion = 16` and change it to `18`.
+  - In older versions of react-native, the `minSdkVersion` config is in `android/app/build.gradle`.
 
 ## Location permission
 
@@ -86,7 +79,7 @@ On **iOS**, you also need to make sure you have the following entries in your ap
 
 These are the messages that iOS will show as part of the location permission popup.
 
-On **Android**, you need to bump the `targetSdkVersion` of your app to 23, since that's when the new permissions system was introduced. In the `android/app/build.gradle` file: find `targetSdkVersion 22` and change it to `23`.
+On **Android**, the `targetSdkVersion` needs to be at least 23. New versions of react-native (0.56+) use 26+, so you don't need to do anything. If you're still on an older version, then in the `android/app/build.gradle` file: find `targetSdkVersion 22` and change it to `23`.
 
 ## Background support
 
@@ -103,7 +96,8 @@ On **iOS**, you need to:
 On **Android**, you need to:
 
 1. Make sure your target API level is at least 23.
-   - In the `android/app/build.gradle` file: find `targetSdkVersion 22` and change it to `23`.
+   - New versions of react-native (0.56+) use 26+, so you don't need to do anything.
+   - If you're still on an older version, then in the `android/app/build.gradle` file: find `targetSdkVersion 22` and change it to `23`.
 2. When initializing the Proximity Observer in your JavaScript code, make sure to pass a "notification" config. See the `example/index.js` for more.
 
 ## Usage & examples
