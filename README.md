@@ -29,7 +29,7 @@ On **iOS**, you also need to:
       platform :ios, '10.0'
 
       target 'NAME_OF_YOUR_APP' do
-        pod 'EstimoteProximitySDK'
+        pod 'EstimoteProximitySDK', '~> 1.0'
       end
       ```
 

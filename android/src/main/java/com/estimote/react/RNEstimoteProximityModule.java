@@ -7,11 +7,13 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.estimote.proximity_sdk.proximity.EstimoteCloudCredentials;
-import com.estimote.proximity_sdk.proximity.ProximityContext;
-import com.estimote.proximity_sdk.proximity.ProximityObserver;
-import com.estimote.proximity_sdk.proximity.ProximityObserverBuilder;
-import com.estimote.proximity_sdk.proximity.ProximityZone;
+import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
+import com.estimote.proximity_sdk.api.ProximityObserver;
+import com.estimote.proximity_sdk.api.ProximityObserverBuilder;
+import com.estimote.proximity_sdk.api.ProximityZone;
+import com.estimote.proximity_sdk.api.ProximityZoneBuilder;
+import com.estimote.proximity_sdk.api.ProximityZoneContext;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -23,8 +25,10 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -57,7 +61,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
         ProximityObserverBuilder builder = new ProximityObserverBuilder(reactContext, credentials)
                 .withBalancedPowerMode()
-                .withOnErrorAction(new Function1<Throwable, Unit>() {
+                .onError(new Function1<Throwable, Unit>() {
                     @Override
                     public Unit invoke(Throwable throwable) {
                         Log.e(TAG, "Proximity Observer error: " + throwable);
@@ -104,6 +108,8 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startObservingZones(ReadableArray zonesJSON) {
+        List<ProximityZone> zones = new ArrayList<ProximityZone>(zonesJSON.size());
+
         for (int i = 0; i < zonesJSON.size(); i++) {
             ReadableMap zoneJSON = zonesJSON.getMap(i);
 
@@ -111,13 +117,13 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
             double range = zoneJSON.getDouble("range");
             String tag = zoneJSON.getString("tag");
 
-            ProximityZone zone = observer.zoneBuilder()
+            ProximityZone zone = new ProximityZoneBuilder()
                     .forTag(tag)
                     .inCustomRange(range)
-                    .withOnEnterAction(new Function1<ProximityContext, Unit>() {
+                    .onEnter(new Function1<ProximityZoneContext, Unit>() {
                         @Override
-                        public Unit invoke(ProximityContext context) {
-                            Log.i(TAG, "onEnterAction, zoneId = " + _id + ", context = " + context.toString());
+                        public Unit invoke(ProximityZoneContext context) {
+                            Log.i(TAG, "onEnter, zoneId = " + _id + ", context = " + context.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
                             map.putMap("context", contextToMap(context));
@@ -125,10 +131,10 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
                             return null;
                         }
                     })
-                    .withOnExitAction(new Function1<ProximityContext, Unit>() {
+                    .onExit(new Function1<ProximityZoneContext, Unit>() {
                         @Override
-                        public Unit invoke(ProximityContext context) {
-                            Log.i(TAG, "onExitAction, zoneId = " + _id + ", context = " + context.toString());
+                        public Unit invoke(ProximityZoneContext context) {
+                            Log.i(TAG, "onExit, zoneId = " + _id + ", context = " + context.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
                             map.putMap("context", contextToMap(context));
@@ -136,10 +142,10 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
                             return null;
                         }
                     })
-                    .withOnChangeAction(new Function1<List<? extends ProximityContext>, Unit>() {
+                    .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
                         @Override
-                        public Unit invoke(List<? extends ProximityContext> contexts) {
-                            Log.i(TAG, "onChangeAction, zoneId = " + _id + ", contexts = " + contexts.toString());
+                        public Unit invoke(Set<? extends ProximityZoneContext> contexts) {
+                            Log.i(TAG, "onContextChange, zoneId = " + _id + ", contexts = " + contexts.toString());
                             WritableMap map = new WritableNativeMap();
                             map.putString("zoneId", _id);
                             map.putArray("contexts", contextsToArray(contexts));
@@ -147,9 +153,9 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
                             return null;
                         }
                     })
-                    .create();
+                    .build();
 
-            observer.addProximityZone(zone);
+            zones.add(zone);
         }
 
         // clean up after the previous observer, if any
@@ -157,7 +163,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
             observationHandler.stop();
         }
 
-        observationHandler = observer.start();
+        observationHandler = observer.startObserving(zones);
     }
 
     @ReactMethod
@@ -184,17 +190,17 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
         return map;
     }
 
-    private WritableMap contextToMap(ProximityContext context) {
+    private WritableMap contextToMap(ProximityZoneContext context) {
         WritableMap map = new WritableNativeMap();
         map.putString("tag", context.getTag());
         map.putMap("attachments", attachmentsToMap(context.getAttachments()));
-        map.putString("deviceIdentifier", context.getInfo().getDeviceId());
+        map.putString("deviceIdentifier", context.getDeviceId());
         return map;
     }
 
-    private WritableArray contextsToArray(List<? extends ProximityContext> contexts) {
+    private WritableArray contextsToArray(Set<? extends ProximityZoneContext> contexts) {
         WritableArray array = new WritableNativeArray();
-        for (ProximityContext context : contexts) {
+        for (ProximityZoneContext context : contexts) {
             array.pushMap(contextToMap(context));
         }
         return array;

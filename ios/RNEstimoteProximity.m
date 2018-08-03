@@ -5,7 +5,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "EPXCloudCredentials.h"
-#import "EPXDeviceAttachment.h"
 #import "EPXProximityObserver.h"
 #import "EPXProximityZone.h"
 #import "EPXProximityZoneContext.h"
@@ -24,10 +23,9 @@ NSString * authStringForCurrentAuthStatus() {
     }
 }
 
-NSDictionary * contextToJSON(id<EPXProximityZoneContext> context) {
-    NSDictionary *attachments = context.attachments[0].payload;
+NSDictionary * contextToJSON(EPXProximityZoneContext *context) {
     return @{@"tag": context.tag,
-             @"attachments": attachments == nil ? [NSNull null] : attachments,
+             @"attachments": context.attachments,
              @"deviceIdentifier": context.deviceIdentifier};
 }
 
@@ -62,7 +60,7 @@ RCT_EXPORT_METHOD(initialize:(NSDictionary *)config) {
 
     EPXCloudCredentials *credentials = [[EPXCloudCredentials alloc] initWithAppID:config[@"appId"] appToken:config[@"appToken"]];
 
-    self.observer = [[EPXProximityObserver alloc] initWithCredentials:credentials errorBlock:^(NSError * _Nonnull error) {
+    self.observer = [[EPXProximityObserver alloc] initWithCredentials:credentials onError:^(NSError * _Nonnull error) {
         RCTLogError(@"Proximity Observer error: %@", error);
     }];
 }
@@ -78,30 +76,30 @@ RCT_EXPORT_METHOD(startObservingZones:(NSArray *)zonesJSON) {
         RCTLogInfo(@"Creating Proximity Zone _id = %@, range = %@, tag = %@", _id, range, tag);
 
         EPXProximityZone *zone = [[EPXProximityZone alloc]
-                                  initWithRange:[EPXProximityRange customRangeWithDesiredMeanTriggerDistance:range.doubleValue]
-                                  tag:tag];
+                                  initWithTag:tag
+                                  range:[EPXProximityRange customRangeWithDesiredMeanTriggerDistance:range.doubleValue]];
 
         __weak __typeof(self) weakSelf = self;
 
-        zone.onEnterAction = ^(id<EPXProximityZoneContext> context) {
-            RCTLogInfo(@"onEnterAction, zoneId = %@, context = %@", _id, context);
+        zone.onEnter = ^(EPXProximityZoneContext *context) {
+            RCTLogInfo(@"onEnter, zoneId = %@, context = %@", _id, context);
 
             [weakSelf sendEventWithName:@"Enter" body:@{@"zoneId": _id,
                                                         @"context": contextToJSON(context)}];
         };
 
-        zone.onExitAction = ^(id<EPXProximityZoneContext> context) {
-            RCTLogInfo(@"onExitAction, zoneId = %@, context = %@", _id, context);
+        zone.onExit = ^(EPXProximityZoneContext *context) {
+            RCTLogInfo(@"onExit, zoneId = %@, context = %@", _id, context);
 
             [weakSelf sendEventWithName:@"Exit" body:@{@"zoneId": _id,
                                                        @"context": contextToJSON(context)}];
         };
 
-        zone.onChangeAction = ^(NSSet<id<EPXProximityZoneContext>> *contexts) {
-            RCTLogInfo(@"onChangeAction, zoneId = %@, contexts = %@", _id, contexts);
+        zone.onContextChange = ^(NSSet<EPXProximityZoneContext *> *contexts) {
+            RCTLogInfo(@"onContextChange, zoneId = %@, contexts = %@", _id, contexts);
 
             NSMutableArray *convertedContexts = [NSMutableArray arrayWithCapacity:contexts.count];
-            for (id<EPXProximityZoneContext> context in contexts) {
+            for (EPXProximityZoneContext *context in contexts) {
                 [convertedContexts addObject:contextToJSON(context)];
             }
             [weakSelf sendEventWithName:@"Change" body:@{@"zoneId": _id,

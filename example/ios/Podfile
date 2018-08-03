@@ -1,5 +1,5 @@
 platform :ios, '10.0'
 
 target 'example' do
-  pod 'EstimoteProximitySDK'
+  pod 'EstimoteProximitySDK', '~> 1.0'
 end
