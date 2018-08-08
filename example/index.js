@@ -24,8 +24,7 @@ zone1.onExitAction = context => {
 zone1.onChangeAction = contexts => {
   // onChange event gives you granular data about which exact beacons are in range
   //
-  // imagine there are 2 beacons tagged "lobby", to help cover the entire lobby area
-  // here's an example sequence of events:
+  // imagine there are 2 beacons tagged "lobby", to help cover the entire lobby area; here's an example sequence of events:
   //
   // 1. when you enter the range of the 1st one, you'll get:
   // lobby onEnter
@@ -54,11 +53,19 @@ zone2.onChangeAction = contexts => {
   console.log("zone2 onChange", contexts);
 };
 
-// detecting Bluetooth beacons is considered as knowing the user's location (because you know when the user is in the lobby
-// or in the conference room), and so on both iOS and Android it requires asking the user for permission to use their location
+// detecting proximity to Bluetooth beacons gives you information about the user's location, and so
+// on both iOS and Android it's required to ask the user for permission to do that
 //
-// on Android, it'll be a simple "yes/no" popup
-// on iOS, the user can choose between "never", "only when using the app" and "always" (background)
+// - on iOS, the user can choose between "never", "only when using the app" and "always" (background)
+//   - however, background support also requires that you enable the "Uses Bluetooth LE accessories"
+//     Background Mode for your app
+//   - you can do that in Xcode project settings, on the Capabilities tab
+//   - you might also need to explain/defend your app's background usage during the App Store review
+//
+// - on Android, it'll be a simple "yes/no" popup, which is equivalent to "never" and "always"
+//   - however, to have it work in the background, you're also required to show a notification, so
+//     that the user knows that the app keeps running/detecting beacons even if they close it
+//   - see the `config` section below for how to enable/configure such notification
 //
 // see also: "Location permission" and "Background support" sections in the README
 RNEP.locationPermission.request().then(
