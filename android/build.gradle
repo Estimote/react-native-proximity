@@ -30,5 +30,5 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile('com.estimote:proximity-sdk:1.0.0')
+    compile('com.estimote:proximity-sdk:1.0.2')
 }
