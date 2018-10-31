@@ -1,12 +1,17 @@
-// @flow
-"use strict";
+/** @format */
 
 import { AppRegistry } from "react-native";
 import App from "./App";
+import { name as appName } from "./app.json";
+
+AppRegistry.registerComponent(appName, () => App);
 
 import * as RNEP from "@estimote/react-native-proximity";
 
-AppRegistry.registerComponent("example", () => App);
+// generate Estimote Cloud credentials for your app at:
+// https://cloud.estimote.com/#/apps/add/your-own-app
+const ESTIMOTE_APP_ID = "<#APP_ID#>";
+const ESTIMOTE_APP_TOKEN = "<#APP_TOKEN#>";
 
 // will trigger when the user is within ~ 5 m of any beacon with tag "lobby"
 // you can add tags to your beacons on https://cloud.estimote.com, in Beacon Settings
@@ -74,11 +79,9 @@ RNEP.locationPermission.request().then(
     console.log(`location permission: ${permission}`);
 
     if (permission !== RNEP.locationPermission.DENIED) {
-      // generate Estimote Cloud credentials for your app at:
-      // https://cloud.estimote.com/#/apps/add/your-own-app
       const credentials = new RNEP.CloudCredentials(
-        "<#APP_ID#>",
-        "<#APP_TOKEN#>"
+        ESTIMOTE_APP_ID,
+        ESTIMOTE_APP_TOKEN
       );
 
       const config = {

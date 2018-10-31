@@ -13,7 +13,7 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 ## Installation
 
 ```console
-$ npm install @estimote/react-native-proximity --save
+$ yarn add @estimote/react-native-proximity
 $ react-native link @estimote/react-native-proximity
 ```
 
@@ -106,7 +106,7 @@ On **Android**, you need to:
 
 Check `example/index.js` for a quick run-down of how to use this library.
 
-You can run the example app with the usual `react-native run-android` and `run-ios`. Note that iOS and Android simulators don't support Bluetooth, so **you need to run it on a physical device**.
+You can run the example app with the usual `react-native run-android` and `run-ios --device`. Note that iOS and Android simulators don't support Bluetooth, so **you need to run it on a physical device**.
 
 To run the example on iOS, you also need to install pods (dependencies) first:
 

@@ -1,5 +1,5 @@
 rootProject.name = 'example'
-include ':@estimote/react-native-proximity'
-project(':@estimote/react-native-proximity').projectDir = new File(rootProject.projectDir, '../node_modules/@estimote/react-native-proximity/android')
+include ':@estimote_react-native-proximity'
+project(':@estimote_react-native-proximity').projectDir = new File(rootProject.projectDir, '../node_modules/@estimote/react-native-proximity/android')
 
 include ':app'
