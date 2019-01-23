@@ -93,6 +93,8 @@ On **iOS**, you need to:
 4. Go to the "Capabilities" tab.
 5. Enable "Background Modes" and check "Uses Bluetooth LE accessories".
 
+**Note**: Background Modes undergo extra scrutiny during App Store review. If you're submitting your app to the App Store, we recommend proactively explaining in the notes why/how your app uses Bluetooth in the background.
+
 On **Android**, you need to:
 
 1. Make sure your target API level is at least 23.
