@@ -65,6 +65,9 @@ type ProximityObserverConfig = {
 
 // singleton object
 export const proximityObserver = {
+
+  isObserving: false,
+
   initialize(credentials: CloudCredentials, config: ProximityObserverConfig) {
     RNEstimoteProximity.initialize(
       Object.assign({}, config, {
@@ -75,6 +78,12 @@ export const proximityObserver = {
   },
 
   startObservingZones(zones: Array<ProximityZone>) {
+    if (this.isObserving) {
+      console.warn("'startObservingZones' was called while already observing. I'll stop the previous observation for you, but make sure that you're properly managing the lifecycle of the observer. See also: https://github.com/Estimote/react-native-proximity#already-observing");
+      this.stopObservingZones();
+    }
+    this.isObserving = true;
+
     const zonesById: Map<string, ProximityZone> = zones.reduce((map, z) => {
       return map.set(z._id, z);
     }, new Map());
@@ -82,8 +91,11 @@ export const proximityObserver = {
     this.onEnterSubscription = RNEstimoteProximityEmitter.addListener(
       `Enter`,
       event => {
-        // $FlowFixMe
-        const onEnterAction = zonesById.get(event.zoneId).onEnterAction;
+        const zone = zonesById.get(event.zoneId);
+        if (zone === undefined) {
+          return;
+        }
+        const onEnterAction = zone.onEnterAction;
         if (typeof onEnterAction === "function") {
           const context = ProximityContext.fromJSON(event.context);
           onEnterAction(context);
@@ -94,8 +106,11 @@ export const proximityObserver = {
     this.onExitSubscription = RNEstimoteProximityEmitter.addListener(
       `Exit`,
       event => {
-        // $FlowFixMe
-        const onExitAction = zonesById.get(event.zoneId).onExitAction;
+        const zone = zonesById.get(event.zoneId);
+        if (zone === undefined) {
+          return;
+        }
+        const onExitAction = zone.onExitAction;
         if (typeof onExitAction === "function") {
           const context = ProximityContext.fromJSON(event.context);
           onExitAction(context);
@@ -106,8 +121,12 @@ export const proximityObserver = {
     this.onChangeSubscription = RNEstimoteProximityEmitter.addListener(
       `Change`,
       event => {
-        // $FlowFixMe
-        const onChangeAction = zonesById.get(event.zoneId).onChangeAction;
+        const zone = zonesById.get(event.zoneId);
+        if (zone === undefined) {
+          console.error('Got a proximity event for an unknown zone. This is most likely a bug, please report to https://github.com/Estimote/react-native-proximity/issues');
+          return;
+        }
+        const onChangeAction = zone.onChangeAction;
         if (typeof onChangeAction === "function") {
           const contexts = event.contexts.map(context =>
             ProximityContext.fromJSON(context)
@@ -124,10 +143,12 @@ export const proximityObserver = {
     }));
 
     RNEstimoteProximity.startObservingZones(zonesJSON);
+    this.isObserving = true;
   },
 
   stopObservingZones() {
     RNEstimoteProximity.stopObservingZones();
+    this.isObserving = false;
 
     this.onEnterSubscription.remove();
     this.onExitSubscription.remove();

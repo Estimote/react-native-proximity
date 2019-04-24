@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
+import {startProximityObserver, stopProximityObserver} from './proximityObserver';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -18,6 +20,16 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  /* if you want the Proximity Observer running as part of some component's lifecycle, do something like this: */
+  // componentDidMount() {
+  //   startProximityObserver();
+  // }
+  // componentWillUnmount() {
+  //   stopProximityObserver();
+  // }
+  /* see also: https://github.com/Estimote/react-native-proximity#already-observing */
+
   render() {
     return (
       <View style={styles.container}>

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0
+
+- Fixed "undefined is not an object" error, as reported in https://github.com/Estimote/react-native-proximity/issues/21.
+
+  - This error happened when the Observer hasn't been stopped properly before calling another `startObservingZones`.
+  - Instead, the plugin will now automatically stop the previous observation, and log a warning about this.
+  - Most commonly, this is tied to improper lifecycle management of the Observer. There's a new section in the README which explains this topic in more detail, and lays out some recommendations and best practices: https://github.com/Estimote/react-native-proximity#already-observing. The new warning also points to this section.
+
+- Updated the native Android module's build.gradle, getting rid of the warnings.
+
 ## 0.4.0
 
 - Updated the native iOS and Android Estimote Proximity SDKs to 1.0.0.

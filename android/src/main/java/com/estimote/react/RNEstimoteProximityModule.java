@@ -108,6 +108,8 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startObservingZones(ReadableArray zonesJSON) {
+        Log.d(TAG, "startObservingZones: " + zonesJSON);
+
         List<ProximityZone> zones = new ArrayList<ProximityZone>(zonesJSON.size());
 
         for (int i = 0; i < zonesJSON.size(); i++) {
@@ -160,6 +162,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
         // clean up after the previous observer, if any
         if (observationHandler != null) {
+            Log.e(TAG, "startObservingZones called without stopping the previous observer; this will cause problems");
             observationHandler.stop();
         }
 
@@ -168,15 +171,21 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void stopObservingZones() {
+        Log.d(TAG, "stopObservingZones");
         if (observationHandler != null) {
+            Log.d(TAG, "observationHandler.stop()");
             observationHandler.stop();
+            observationHandler = null;
         }
     }
 
     @Override
     public void onCatalystInstanceDestroy() {
+        Log.d(TAG, "onCatalystInstanceDestroy");
         if (observationHandler != null) {
+            Log.d(TAG, "observationHandler.stop()");
             observationHandler.stop();
+            observationHandler = null;
         }
     }
 
