@@ -157,7 +157,7 @@ Generally speaking, there are two options, depending on your use case:
 
 These are just two general recommendations, but every app is different, so if you're not sure how to handle your particular use case, drop a post at [forums.estimote.com][forums], and we'll be happy to help.
 
-> If you're using redux for your state management, a good idea might be to create and start the Proximity Observer together with your redux store, and have the proximity events dispatch appropriate actions. The rest of your app can then subscribe to state/store changes as needed, and benefit from the proximity events this way. What a beautiful separation of concerns!
+> If you're using redux for your state management, a good idea might be to start the Proximity Observer where you create your redux store, and have the proximity events dispatch appropriate actions. The rest of your app can then subscribe to state/store changes as needed, and benefit from the proximity events this way. What a beautiful separation of concerns!
 
 ## Contact & feedback
 
