@@ -16,7 +16,7 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 ```console
 $ yarn add @estimote/react-native-proximity
 $ # or if you use npm:
-$ npm save --install @estimote/react-native-proximity
+$ npm install @estimote/react-native-proximity --save
 
 $ react-native link @estimote/react-native-proximity
 ```
