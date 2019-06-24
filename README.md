@@ -59,7 +59,9 @@ On **Android**, you need to:
   - In older versions of react-native, the `minSdkVersion` config is in `android/app/build.gradle`.
   
 - If you target API 28 or above, you need to add the following to your manifest:
+
   ``<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />``
+  
   Not adding this permission will result in the system throwing a SecurityException
 
 ## Location permission
