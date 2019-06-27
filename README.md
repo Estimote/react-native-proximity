@@ -112,6 +112,12 @@ On **Android**, you need to:
 
 2. When initializing the Proximity Observer in your JavaScript code, make sure to pass a "notification" config. See the `example/proximityObserver.js` for more.
 
+3. Add the following line to android/main/src/AndroidManifest.xml:
+
+   ```
+   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+   ```
+
 ## Usage & examples
 
 Check [`example/proximityObserver.js`](https://github.com/Estimote/react-native-proximity/blob/master/example/proximityObserver.js) for a quick run-down of how to use this library.
