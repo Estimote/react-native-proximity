@@ -33,7 +33,7 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 - "ejected" React Native project
   - see [Getting Started](https://facebook.github.io/react-native/docs/getting-started) and the "React Native CLI Quickstart" tab for everything you'll need to build native code
 
-- while normally you only need Xcode 9.4 or later for building "ejected" React Native projects, this plugin requires Xcode 10.2 or later
+- while normally you only need Xcode 9.4 or later, this plugin instead requires Xcode 10.2 or later
 
 ## Installation
 
