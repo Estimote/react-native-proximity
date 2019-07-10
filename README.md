@@ -47,8 +47,8 @@ On **iOS**, you'll also need to:
 
 - edit `ios/Podfile` and change `platform :ios, '9.0'` to `platform :ios, '10.0'`
 - run `pod --repo-update install` inside the `ios` directory
-- in your Xcode project's Build Settings, find and enable "Always Embed Swift in Standard Libraries"
-  - exception: starting with iOS 12.2, Swift libraries are included in the system, so if your app only targets 12.2 or later, you don't need this setting
+- in your Xcode project's Build Settings, find and set "Always Embed Swift in Standard Libraries" to "YES"
+  - exception: if you only target iOS 12.2 or later, you can leave this at "NO" (that's because starting with iOS 12.2, Swift standard libraries are included in the system itself, and no longer need to be bundled with the app)
 
 On **Android**, you'll also need to:
 
