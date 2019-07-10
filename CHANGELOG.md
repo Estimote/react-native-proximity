@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0
+
+- Updated for compatibility with React Native 0.60.
+
+  - Added a podspec for the new, built-in CocoaPods support. This means you no longer need to manually include Estimote Proximity SDK dependency in your Podfile. Instead, the new auto-linking will automatically pull the plugin's podspec, and the plugin's podspec will automatically pull Estimote Proximity SDK.
+
+- Migrated the native Android code to AndroidX.
+
+  - Unfortunately, this is a **breaking change**, and means that **0.6.0 can no longer be used with React Native < 0.60**. (If you happen to know a good way to support both AndroidX and the previous support libraries, please open an issue and let us know!)
+
+- Updated the native Android Proximity SDK to 1.0.3, and the Android com.estimote:scanning-plugin to 0.25.2.
+
+  - This fixes a potential crash if there's an Estimote LTE Beacon in range.
+
 ## 0.5.0
 
 - Fixed "undefined is not an object" error, as reported in https://github.com/Estimote/react-native-proximity/issues/21.
