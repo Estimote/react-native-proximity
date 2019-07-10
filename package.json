@@ -1,12 +1,22 @@
 {
   "name": "@estimote/react-native-proximity",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "React Native wrapper for Estimote Proximity SDK",
   "main": "index.js",
-  "keywords": ["react-native", "estimote"],
+  "keywords": [
+    "beacons",
+    "estimote",
+    "proximity",
+    "react-native"
+  ],
   "author": "Estimote <contact@estimote.com>",
   "license": "Apache-2.0",
   "homepage": "https://github.com/Estimote/react-native-proximity",
-  "bugs": {"url": "https://github.com/Estimote/react-native-proximity/issues"},
-  "repository": {"type": "git", "url": "https://github.com/Estimote/react-native-proximity.git"}
+  "bugs": {
+    "url": "https://github.com/Estimote/react-native-proximity/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Estimote/react-native-proximity.git"
+  }
 }

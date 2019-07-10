@@ -4,6 +4,7 @@ React Native wrapper for Estimote Proximity SDK.
 
 You can read more about Estimote Proximity on [developer.estimote.com](https://developer.estimote.com).
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Location permission](#location-permission)
 - [Background support](#background-support)
@@ -11,52 +12,47 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
   - ["Already observing"](#already-observing)
 - [Contact & feedback](#contact--feedback)
 
+## Prerequisites
+
+- React Native 0.60
+
+  - if you're on React Native < 0.60, use version 0.5.0 of this plugin:
+
+    ```console
+    $ yarn add @estimote/react-native-proximity@0.5.0
+    $ # or, if you use npm:
+    $ npm install @estimote/react-native-proximity@0.5.0 --save --save-exact
+
+    $ react-native link @estimote/react-native-proximity
+    ```
+
+    then, follow the README from the 0.5.0 version:
+
+    https://github.com/Estimote/react-native-proximity/blob/v0.5.0/README.md
+
+- "ejected" React Native project
+  - see [Getting Started](https://facebook.github.io/react-native/docs/getting-started) and the "React Native CLI Quickstart" tab for everything you'll need to build native code
+
+- while normally you only need Xcode 9.4 or later for building "ejected" React Native projects, this plugin requires Xcode 10.2 or later
+
 ## Installation
 
 ```console
 $ yarn add @estimote/react-native-proximity
-$ # or if you use npm:
+$ # or, if you use npm:
 $ npm install @estimote/react-native-proximity --save
-
-$ react-native link @estimote/react-native-proximity
 ```
 
-On **iOS**, you also need to:
+On **iOS**, you'll also need to:
 
-1. Add Estimote Proximity SDK and its dependencies to your app's Xcode project. The easiest way to do that is via CocoaPods:
+- edit `ios/Podfile` and change `platform :ios, '9.0'` to `platform :ios, '10.0'`
+- run `pod --repo-update install` inside the `ios` directory
+- in your Xcode project's Build Settings, find and enable "Always Embed Swift in Standard Libraries"
+  - exception: starting with iOS 12.2, Swift libraries are included in the system, so if your app only targets 12.2 or later, you don't need this setting
 
-   1.1. Install CocoaPods: https://cocoapods.org
+On **Android**, you'll also need to:
 
-   1.2. In the `ios` directory of your app, add a `Podfile` with this content:
-
-      ```ruby
-      platform :ios, '10.0'
-
-      target 'NAME_OF_YOUR_APP' do
-        pod 'EstimoteProximitySDK', '~> 1.0'
-      end
-      ```
-
-      The `NAME_OF_YOUR_APP` is usually the same thing you used with `react-native init`.
-
-      > The latest version of the Estimote Proximity SDK for iOS requires Xcode 10.2 or later. If you're on an earlier version of Xcode 10, use Proximity SDK 1.2.1. If you're using Xcode < 10, use Proximity SDK 1.1.0. If you're using Xcode < 9.3 ... you should consider updating (-; or drop by [forums.estimote.com][forums] for help.
-      >
-      > You set the version of the iOS Proximity SDK to use in the Podfile: change `~> 1.0` to `1.2.1` (or another version you want to use).
-
-   1.3. Inside the `ios` directory, run:
-
-      ```
-      $ pod --repo-update install
-      ```
-
-2. In your Xcode project's Build Settings, find and enable "Always Embed Swift in Standard Libraries".
-
-On **Android**, you need to:
-
-- Bump the `minSdkVersion` of your app to 18, since that's the lowest Estimote Proximity SDK supports:
-
-  - In the `android/build.gradle` file: find `minSdkVersion = 16` and change it to `18`.
-  - In older versions of react-native, the `minSdkVersion` config is in `android/app/build.gradle`.
+- edit `android/build.gradle` and change `minSdkVersion = 16` to `minSdkVersion = 18`
 
 ## Location permission
 
@@ -122,24 +118,12 @@ On **Android**, you need to:
 
 Check [`example/proximityObserver.js`](https://github.com/Estimote/react-native-proximity/blob/master/example/proximityObserver.js) for a quick run-down of how to use this library.
 
-You can run the example app with the usual `react-native run-android` and `run-ios --device`. Note that iOS and Android simulators don't support Bluetooth, so **you need to run it on a physical device**.
+To set up the included example app for running:
 
-Oh, and remember to run `yarn install` inside the `example` first.
+1. Run `npm install` or `yarn install` inside `example`.
+2. Run `pod --repo-update install` inside `example/ios`.
 
-> `npm` won't work out-of-the-box for the `example`, since `npm` will create a local symlink to the proximity plugin, and React Native's bundler doesn't work with symlinks. Use `yarn`, or change the `package.json` by replacing `"file:../"` with the latest version of the proximity plugin.
-
-To run the example on iOS, you also need to install Estimote Proximity SDK and its dependencies:
-
-1. Install CocoaPods: https://cocoapods.org
-2. Inside the `example/ios` directory, run:
-
-   ```
-   $ pod --repo-update install
-   ```
-
-> The latest version of the Estimote Proximity SDK for iOS requires Xcode 10.2 or later. If you're on an earlier version of Xcode 10, use Proximity SDK 1.2.1. If you're using Xcode < 10, use Proximity SDK 1.1.0. If you're using Xcode < 9.3 ... you should consider updating (-; or drop by [forums.estimote.com][forums] for help.
->
-> You set the version of the iOS Proximity SDK to use in the Podfile: change `~> 1.0` to `1.2.1` (or another version you want to use).
+Then, you can do the usual `react-native run-android` and `run-ios --device`. Note that iOS and Android simulators don't support Bluetooth, so **you need to run it on a physical device**.
 
 ### "Already observing"
 

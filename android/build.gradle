@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.4.1'
     }
 }
 
@@ -31,5 +31,6 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.estimote:proximity-sdk:1.0.2'
+    implementation 'com.estimote:proximity-sdk:1.0.3'
+    implementation 'com.estimote:scanning-plugin:0.25.2'
 }

@@ -1,5 +1,3 @@
-rootProject.name = 'example'
-include ':@estimote_react-native-proximity'
-project(':@estimote_react-native-proximity').projectDir = new File(rootProject.projectDir, '../node_modules/@estimote/react-native-proximity/android')
-
+rootProject.name = 'ProximityExample'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
