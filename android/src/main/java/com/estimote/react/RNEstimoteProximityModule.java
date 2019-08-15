@@ -235,7 +235,7 @@ public class RNEstimoteProximityModule extends ReactContextBaseJavaModule {
             iconRes = reactContext.getResources().getIdentifier("ic_launcher", "mipmap", reactContext.getPackageName());
         }
 
-        return new NotificationCompat.Builder(reactContext, channelId)
+        return new NotificationCompat.Builder(reactContext)
                 .setSmallIcon(iconRes)
                 .setContentTitle(title)
                 .setContentText(text)
