@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  Represents a logical zone. Is represented by range from a beacon and attachment rule (attachment key + attachment value).
  Can be spanned by one or more beacons. Beacon identification is attachment-based
  (see https://github.com/Estimote/iOS-Proximity-SDK/blob/master/README.md for more info).
- 
+
  Note: at the moment, Proximity SDK supports monitoring only 100 devices per zone. If more devices have their attachments
  matching the key, value defined in the zone, the first 100 are monitored.
  */
