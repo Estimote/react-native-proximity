@@ -4,9 +4,9 @@ PODS:
   - estimote-react-native-proximity (0.6.0):
     - EstimoteProximitySDK (~> 1.0)
     - React
-  - EstimoteBluetoothScanning (1.0.5)
-  - EstimoteProximitySDK (1.4.1):
-    - EstimoteBluetoothScanning (>= 0.2)
+  - EstimoteBluetoothScanning (1.0.6)
+  - EstimoteProximitySDK (1.5.0):
+    - EstimoteBluetoothScanning (~> 1.0.6)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -171,9 +171,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  estimote-react-native-proximity: bba65e276c1a16dcb2c24e7b6214a284c172610e
-  EstimoteBluetoothScanning: 8aae20369d7d9008deb8429b9c83c11e948bd7be
-  EstimoteProximitySDK: ff97b13e674ebe82ceaf0cd46a29422211c52d85
+  estimote-react-native-proximity: d567ac92120a97afcb09d68a10bfdf438c0456d7
+  EstimoteBluetoothScanning: a8bfa6dfb36d0e7a2a811adbcfb3b87b3e343482
+  EstimoteProximitySDK: b8b4d96ed872431e7941863d009bb99d28ceaf99
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   React: 4b3c068e793e96672dcd186a2b572fac43e4b031
