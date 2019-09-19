@@ -7,6 +7,7 @@ You can read more about Estimote Proximity on [developer.estimote.com](https://d
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Location permission](#location-permission)
+- [Bluetooth permission](#bluetooth-permission)
 - [Background support](#background-support)
 - [Usage & examples](#usage--examples)
   - ["Already observing"](#already-observing)
@@ -84,6 +85,17 @@ On **iOS**, you also need to make sure you have the following entries in your ap
 These are the messages that iOS will show as part of the location permission popup.
 
 On **Android**, the `targetSdkVersion` needs to be at least 23. New versions of react-native (0.56+) use 26+, so you don't need to do anything. If you're still on an older version, then in the `android/app/build.gradle` file: find `targetSdkVersion 22` and change it to `23`.
+
+## Bluetooth permission
+
+On **iOS**, you also need to add the following entry in your app's Info.plist file: (you'll usually find it at `ios/APP_NAME/Info.plist`)
+
+```xml
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>We use Bluetooth beacons for better location accuracy indoors.</string>
+```
+
+This message will show as part of the Bluetooth permission popup introduced in iOS 13.
 
 ## Background support
 
