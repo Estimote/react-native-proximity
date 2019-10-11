@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, EPXProximityObserverError) {
 
     /* Couldn't use motion detection. */
     EPXProximityObserverErrorMotionDetectionFailed,
-    
+
     /* Core Location Services interferred with monitoring */
     EPXProximityObserverErrorMonitoringNotPermitted
 };

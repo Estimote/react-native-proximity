@@ -3,6 +3,10 @@
   "version": "0.6.0",
   "description": "React Native wrapper for Estimote Proximity SDK",
   "main": "index.js",
+  "files": [
+    "/android",
+    "/ios"
+  ],
   "keywords": [
     "beacons",
     "estimote",
@@ -18,5 +22,18 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Estimote/react-native-proximity.git"
+  },
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.59.0-rc.0 <1.0.x"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "eslint": "^6.5.1",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react": "16.9.0",
+    "react-native": "0.61.2"
   }
 }
