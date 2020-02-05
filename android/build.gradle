@@ -31,6 +31,6 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.estimote:proximity-sdk:1.0.3'
-    implementation 'com.estimote:scanning-plugin:0.25.2'
+    implementation 'com.estimote:proximity-sdk:1.0.5'
+    implementation 'com.estimote:scanning-plugin:0.25.4'
 }
